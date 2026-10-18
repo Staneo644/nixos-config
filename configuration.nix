@@ -44,6 +44,7 @@
     openssh.authorizedKeys.keys = [
       # Contents of ~/.ssh/id_ed25519_baguette.pub on your PC
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEfSrRbFMllQJUaZgKIuckIuz2Ta7tcCbOucOBZ+kdXp aurele@fedora->baguette"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF0M5hyaET0ZPSEH7ItzsZhDFQJpuSynb4zP2BS+PrCR aurele@fedora"
     ];
   };
 
