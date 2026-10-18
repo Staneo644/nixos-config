@@ -123,4 +123,17 @@
   # (then never change it again, even after an upgrade).
   ##########################################################################
   system.stateVersion = "26.05";
+
+  services.navidrome = {
+    enable = true;
+    settings = {
+      Address = "0.0.0.0";
+      Port = 4533;
+      MusicFolder = "/srv/music";
+    };
+    openFirewall = true;
+  };
+
+  # crée le dossier de musique, modifiable par ton utilisateur
+  systemd.tmpfiles.rules = [ "d /srv/music 0755 aurele users -" ];
 }
