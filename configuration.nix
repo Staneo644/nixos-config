@@ -14,6 +14,33 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 5; # keeps /boot from filling up
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelModules = [ "coretemp" "nct6775" ];
+
+  hardware.fancontrol = {
+  enable = true;
+  config = ''
+    INTERVAL=10
+    DEVPATH=hwmon0=devices/platform/coretemp.0 hwmon2=devices/platform/nct6775.656
+    DEVNAME=hwmon0=coretemp hwmon2=nct6776
+    FCTEMPS=hwmon2/pwm2=hwmon0/temp1_input
+    FCFANS=hwmon2/pwm2=hwmon2/fan2_input
+    MINTEMP=hwmon2/pwm2=50
+    MAXTEMP=hwmon2/pwm2=70
+    MINSTART=hwmon2/pwm2=60
+    MINSTOP=hwmon2/pwm2=0
+    MINPWM=hwmon2/pwm2=0
+    MAXPWM=hwmon2/pwm2=255
+  '';
+};
+
+systemd.services.veille-nuit = {
+  serviceConfig.Type = "oneshot";
+  script = "${pkgs.util-linux}/bin/rtcwake -m mem -s 28800";
+};
+systemd.timers.veille-nuit = {
+  wantedBy = [ "timers.target" ];
+  timerConfig.OnCalendar = "*-*-* 23:30:00";
+};
 
   # Old PC with "legacy" BIOS: replace the 2 lines above with
   # boot.loader.grub.enable = true;
